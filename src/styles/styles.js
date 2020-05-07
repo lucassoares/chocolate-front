@@ -23,8 +23,6 @@ export const Container = styled.div`
   }
 `;
 
-// ul -> li -> div
-
 export const ChocolateList = styled.ul`
   border-top: 1px solid #eee;
   list-style: none;

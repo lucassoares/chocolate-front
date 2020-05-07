@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlobalStyle from './styles/global';
 import { Container, ChocolateList } from './styles/styles';
 import chocolateImg from './assets/images/chocolate.svg';
+import api from './services/api';
 
 function App() {
+  const [infos, setInfos] = useState([]);
+
+  useEffect(() => {
+    async function loadInfos() {
+      const response = await api.get('/');
+      setInfos(response.data);
+    }
+
+    loadInfos();
+  }, []);
+
   return (
     <div className="App">
       <>
@@ -12,30 +24,25 @@ function App() {
           <img src={chocolateImg} alt="Logo com barra de chocolate" />
           <h1>Chocolates</h1>
           <ChocolateList>
-            <li>
-              <div>
-                <img src={chocolateImg} alt="Imagem de chocolate redonda" />
+            {infos.map((info) => (
+              <li>
                 <div>
-                  <h2>Chocolate de teste</h2>
-                  <p>Valor: R$ 10,00</p>
-                  <p>Marca: Cacau Show</p>
+                  <img
+                    src={`http://${info.imagem} `}
+                    alt="Imagem de chocolate redonda"
+                  />
+                  <div>
+                    <h2>{info.nome}</h2>
+                    <p>{info.valor}</p>
+                    <p>{info.marca}</p>
+                  </div>
                 </div>
-              </div>
-            </li>
-            <li>
-              <div>
-                <img src={chocolateImg} alt="Imagem de chocolate redonda" />
-                <div>
-                  <h2>Chocolate de teste 2 </h2>
-                  <p>Valor: R$ 10,00</p>
-                  <p>Marca: Cacau Show</p>
-                </div>
-              </div>
-            </li>
+              </li>
+            ))}
           </ChocolateList>
         </Container>
       </>
-    </div> // Fechando div app
+    </div>
   );
 }
 
